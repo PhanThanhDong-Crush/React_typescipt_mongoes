@@ -22,7 +22,7 @@ export const HomePage = () => {
                         image="https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*lkAoRbywo0oAAAAAAAAAAAAADrJ8AQ/original"
                     >
                         <h1 style={{ fontSize: "40px", fontWeight: 900, color: "black" }}>Hello <span style={{ color: "red", }}>{user ? user?.name : "?"}</span></h1>
-                        <div style={{ height: 570 }} />
+                        <div style={{ height: 370 }} />
                     </Watermark>
                 </Spin>
             </Content>
