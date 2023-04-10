@@ -13,8 +13,10 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 
-
-export const CategoryEdit = () => {
+interface IProp {
+    editCate: (category: ICategory) => void
+}
+export const CategoryEdit = (prop: IProp) => {
     const { id } = useParams();
 
     const [data, setData] = useState<ICategory>();
@@ -37,10 +39,9 @@ export const CategoryEdit = () => {
     }, [data])
 
     const onFinish = (values: any) => {
-        apiEditCate(values).then(() => {
-            alert("Edit successfully");
-            navigate("/admin/categories");
-        })
+        prop.editCate(values);
+        alert("Edit successfully");
+        navigate("/admin/categories");
     };
 
     const onReset = () => {

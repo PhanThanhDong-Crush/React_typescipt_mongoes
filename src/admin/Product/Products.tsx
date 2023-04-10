@@ -38,7 +38,10 @@ export const Products = (prop: IProp) => {
     };
 
     const OnClickDelete = (_id: any) => {
-        prop.deleteProduct(_id)
+        const confirm = window.confirm("Are you sure ?")
+        if (confirm) {
+            prop.deleteProduct(_id)
+        }
     }
 
     const BigMallProducts = () => {
@@ -102,16 +105,7 @@ export const Products = (prop: IProp) => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Popconfirm
-                        placement="top"
-                        title={"Are you sure ?"}
-                        description={"Delete product !"}
-                        onConfirm={confirm}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <Button type="primary" danger onClick={() => OnClickDelete(record._id)}>Delete</Button>
-                    </Popconfirm>
+                    <Button type="primary" danger onClick={() => OnClickDelete(record._id)}>Delete</Button>
                     <Link to={'/admin/products/' + record._id} ><Button type="primary">Edit</Button></Link>
                 </Space>
             ),

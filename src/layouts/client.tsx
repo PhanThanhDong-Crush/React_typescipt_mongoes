@@ -1,13 +1,45 @@
 import React, { useState } from "react";
 import { Layout, Space } from 'antd';
-import { Link, Outlet } from "react-router-dom";
-import { AimOutlined, ContactsOutlined, HomeOutlined, ShopOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons';
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { AimOutlined, ContactsOutlined, HomeOutlined, LogoutOutlined, ShopOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Footer } = Layout;
 
-const items: MenuProps['items'] = [
+const userJson: any = localStorage.getItem('user');
+const user = JSON.parse(userJson);
+
+
+const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    location.reload();
+};
+
+const sign: any = {
+    label: 'Sign',
+    key: 'SubMenu',
+    icon: <UserOutlined />,
+    children: [
+        {
+            label: (
+                <Link to={"/sign_in"}>Sign In</Link>
+            ),
+            icon: <ContactsOutlined />,
+            key: '3',
+        },
+        {
+            label: (
+                <Link to={"/sign_up"}>Sign Up</Link>
+            ),
+            icon: <UserAddOutlined />,
+            key: '4',
+        },
+    ],
+}
+
+const item: MenuProps['items'] = [
     {
         label: (
             <Link to={"/"}>Home</Link>
@@ -22,34 +54,22 @@ const items: MenuProps['items'] = [
         icon: <ShopOutlined />,
         key: '2',
     },
-    {
-        label: 'Sign',
-        key: 'SubMenu',
-        icon: <UserOutlined />,
-        children: [
-            {
-                label: (
-                    <Link to={"/sign_in"}>Sign In</Link>
-                ),
-                icon: <ContactsOutlined />,
-                key: '3',
-            },
-            {
-                label: (
-                    <Link to={"/sign_up"}>Sign Up</Link>
-                ),
-                icon: <UserAddOutlined />,
-                key: '4',
-            },
-        ],
+
+    (!user) ? sign : {
+        label: (
+            <Link to={"/"} onClick={() => handleLogout()}>Logout</Link>
+        ),
+        icon: <LogoutOutlined />,
+        key: '9',
     },
-    {
+
+    (user && user.role == "admin") ? {
         label: (
             <Link to={"/admin"}></Link>
         ),
         icon: <AimOutlined />,
         key: '5',
-    },
+    } : "",
 ];
 
 export const Client = () => {
@@ -69,7 +89,7 @@ export const Client = () => {
                         color: '#fff',
                         paddingInline: 0
                     }}>
-                        <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ width: '100%' }} />
+                        <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={item} style={{ width: '100%' }} />
                     </Header>
                     <Layout>
                         <Outlet />

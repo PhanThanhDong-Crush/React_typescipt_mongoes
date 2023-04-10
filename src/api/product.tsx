@@ -16,3 +16,12 @@ export const apiEditPro = (product: IProduct) => {
 export const apiDeletePro = (id: any) => {
     return instance.delete("/products/" + id);
 }
+
+export const apiGetOneProDetail = (id: any) => {
+    return instance.get(`/products/${id}/comment`);
+}
+
+export const apiStatisticsCommentPro = () => {
+    return instance.get(`/products_comment_statistics`);
+}
+

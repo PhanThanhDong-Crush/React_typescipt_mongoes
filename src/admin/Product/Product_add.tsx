@@ -25,7 +25,7 @@ interface IProp {
 export const ProductAdd = (prop: IProp) => {
     const [category, setCategory] = useState<ICategory[]>([]);
     useEffect(() => {
-        setCategory(prop.categories)
+        setCategory(prop.categories.filter(cate => cate._id !== "6430de6584e59b4b4f7f04e3"))
     }, [prop])
     const navigate = useNavigate();
 

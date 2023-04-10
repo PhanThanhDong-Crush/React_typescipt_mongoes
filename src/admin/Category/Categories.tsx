@@ -21,7 +21,10 @@ export const Categories = (prop: IProp) => {
     }, [prop])
 
     const OnClickDelete = (_id: any) => {
-        prop.deleteCategory(_id)
+        const confirm = window.confirm("Are you sure ?")
+        if (confirm) {
+            prop.deleteCategory(_id)
+        }
     }
 
     const columns: ColumnsType<ICategory> = [
@@ -35,7 +38,7 @@ export const Categories = (prop: IProp) => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="primary" danger onClick={() => OnClickDelete(record._id)}>Delete</Button>
+                    {(record._id == '6430de6584e59b4b4f7f04e3') ? "" : (<Button type="primary" danger onClick={() => OnClickDelete(record._id)}>Delete</Button>)}
                     <Link to={'/admin/categories/' + record._id} ><Button type="primary">Edit</Button></Link>
                 </Space>
             ),

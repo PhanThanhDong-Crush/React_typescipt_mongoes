@@ -1,4 +1,3 @@
-import axios from "axios";
 import { ICategory } from "../types/interface";
 import { instance } from "./isntance";
 

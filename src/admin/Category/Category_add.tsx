@@ -15,15 +15,17 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 
-export const CategoryAdd = () => {
+interface IProp {
+    addCate: (category: ICategory) => void
+}
+export const CategoryAdd = (prop: IProp) => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
 
     const onFinish = (values: any) => {
-        apiAddCate(values).then(() => {
-            alert("Add successfully");
-            navigate("/admin/categories");
-        })
+        prop.addCate(values);
+        alert("Add successfully");
+        navigate("/admin/categories");
     };
 
     const onReset = () => {

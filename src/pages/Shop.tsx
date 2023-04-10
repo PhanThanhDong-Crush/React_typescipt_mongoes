@@ -26,7 +26,9 @@ export const Shop = (prop: IProp) => {
     const [categories, setCategories] = useState<ICategory[]>([]);
 
     useEffect(() => {
-        setProducts(prop.products);
+        setProducts(prop.products.map((pro: IProduct) => {
+            return { ...pro, key: pro._id }
+        }));
         setCategories(prop.categories);
     }, [prop]);
 
@@ -105,7 +107,7 @@ export const Shop = (prop: IProp) => {
                 <Row>
                     {products.map((pro: IProduct) => {
                         return (
-                            <Col className="gutter-row" span={6}>
+                            <Col className="gutter-row" span={6} key={pro._id}>
                                 <Image src={pro.image} width={200} />
                                 <h2 style={{ marginTop: "-20px" }}><Link to={"/product/" + pro._id}>{pro.name}</Link></h2>
                             </Col>

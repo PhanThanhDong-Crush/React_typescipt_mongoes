@@ -1,10 +1,10 @@
 import { Content } from "antd/es/layout/layout";
 import React, { useEffect, useState } from "react";
-import { IProduct, IProductDetail } from "../types/interface";
-import { Avatar, Button, Card, Divider, Form, Image, Input, Layout, Skeleton, Switch } from "antd";
-import { Link, useParams } from "react-router-dom";
-import { EditOutlined, EllipsisOutlined, GitlabOutlined, LoadingOutlined, PartitionOutlined, SearchOutlined, SendOutlined, SettingOutlined } from "@ant-design/icons";
-import { apiAllPro } from "../api/product";
+import { IComment, IProduct, IProductDetail } from "../types/interface";
+import { Avatar, Button, Card, Divider, Form, Image, Input, Layout } from "antd";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { GitlabOutlined, LoadingOutlined, PartitionOutlined, SendOutlined } from "@ant-design/icons";
+import { apiAllPro, apiGetOneProDetail } from "../api/product";
 
 const { Meta } = Card;
 const layout = {
@@ -15,22 +15,44 @@ const layout = {
 const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
+const userJson: any = localStorage.getItem('user');
+const user = JSON.parse(userJson);
 
 interface IProp {
     products: IProduct[]
+    addCommet: (comment: any) => void
 }
 export const ProductDetail = (prop: IProp) => {
     const { id } = useParams();
-    const [product, setProduct] = useState<IProductDetail>();
+    const navigate = useNavigate();
+    const [product, setProduct] = useState<any>();
+    const [comments, setComments] = useState<any>();
 
     useEffect(() => {
-        setProduct(prop.products.find((pro: IProductDetail) => pro._id == id))
+        apiAllPro().then(({ data }) => setProduct(data.find((pro: IProductDetail) => pro._id == id)));
+        apiGetOneProDetail(id).then(({ data }) => setComments(data.comments))
     }, []);
 
     const [form] = Form.useForm();
 
     const onFinish = (values: any) => {
-
+        if (user) {
+            const time = new Date();
+            const comment = {
+                content: values.content,
+                times: time,
+                productId: id,
+                userId: user._id
+            }
+            prop.addCommet(comment);
+            location.reload();
+        }
+        else {
+            const confirm = window.confirm("You need to be logged in to make comments");
+            if (confirm) {
+                navigate("/sign_in");
+            }
+        }
     };
 
     return (
@@ -52,13 +74,18 @@ export const ProductDetail = (prop: IProp) => {
                 </div>
                 <hr />
                 <div className="comments">
-                    <Card style={{ width: "300px", textAlign: "left" }}>
-                        <Meta
-                            avatar={<Avatar src="https://joesch.moe/api/v1/random" />}
-                            title="Card title"
-                            description="This is the description"
-                        />
-                    </Card>
+                    {comments ? (comments.map((cm: any) => {
+                        return (
+                            <Card style={{ width: "400px", textAlign: "left" }} key={cm._id}>
+                                <Meta
+                                    avatar={<Avatar src={cm.userId.image} style={{ width: "50px", height: "50px" }} />}
+                                    title={cm.userId.name}
+                                    description={`${cm.content} - ${cm.times}`}
+
+                                />
+                            </Card>
+                        )
+                    })) : ""}
                     <Form
                         {...Layout}
                         form={form}

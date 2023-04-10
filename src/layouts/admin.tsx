@@ -6,6 +6,7 @@ import {
     BankOutlined,
     ApartmentOutlined,
     DingtalkOutlined,
+    CommentOutlined,
 } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Layout, Menu, theme } from 'antd';
@@ -50,6 +51,9 @@ export const Admin = () => {
                     </Menu.Item>
                     <Menu.Item key="4" icon={<ApartmentOutlined />}>
                         <Link to={'/admin/categories'}>Categories </Link>
+                    </Menu.Item>
+                    <Menu.Item key="5" icon={<CommentOutlined />}>
+                        <Link to={'/admin/comment'}>Comments </Link>
                     </Menu.Item>
                 </Menu>
             </Sider>

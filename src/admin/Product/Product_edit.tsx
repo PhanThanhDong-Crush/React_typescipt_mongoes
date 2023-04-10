@@ -96,7 +96,7 @@ export const ProductEdit = (prop: IProp) => {
                     <Select placeholder="Select a option category" allowClear>
                         {category.map(cate => {
                             return (
-                                <Option value={cate._id}>{cate.name}</Option>
+                                <Option value={cate._id} key={cate._id}>{cate.name}</Option>
                             )
                         })}
                     </Select>
